@@ -32,9 +32,50 @@ func testGRN(t *testing.T){
 		} else {
 
 			//length is same, compare contents
+			//only check content, not order! [1 2 3] is same as [3 1 2]
+			for _, k := range c.want {
 
-			//TODO: only check content, not order! [1 2 3] is same as [3 1 2]
+				idx := slice.SliceIndex(gotLength, func(i int) bool { return got[i] == k})
 
+				if (idx < 0){
+					isWrong = true
+					break
+				}
+			}
+		}
+
+		if (isWrong){
+			t.Errorf("GetRepeatingNumbers(%v) == %v, want %v", c.input, got, c.want)
+		}
+
+	}
+}
+
+func testGRNH(t *testing.T){
+	var tests = []struct {
+		input []int 
+		want []int
+	}{
+		{[]int{1, 2, 1, 2}, []int{1, 1, 2, 2} },
+		{[]int{1, 2, 2, 1}, []int{} },
+		{[]int{1, 2, 3, 4, 2, 5}, []int{2, 2} },
+		{[]int{1, 2, 3, 1, 2, 3}, []int{1, 2, 3, 1, 2, 3} },
+		{[]int{1, 2, 1, 3, 1, 4, 1, 5}, []int{1, 1, 1, 1} },
+	}
+
+	for _, c := range tests {
+		got := GetRepeatingNumbersHalfway(c.input)
+
+		isWrong := false
+		gotLength := len(got)
+		wantLength := len(c.want)
+
+		if (gotLength != wantLength ) {
+			isWrong = true
+		} else {
+
+			//length is same, compare contents
+			//only check content, not order! [1 2 3] is same as [3 1 2]
 			for _, k := range c.want {
 
 				idx := slice.SliceIndex(gotLength, func(i int) bool { return got[i] == k})
@@ -77,5 +118,6 @@ func testSS(t *testing.T){
 
 func Test(t *testing.T){
 	testGRN(t)
+	testGRNH(t)
 	testSS(t)
 }

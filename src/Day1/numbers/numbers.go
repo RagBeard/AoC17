@@ -1,5 +1,6 @@
 package numbers
 
+
 func GetRepeatingNumbers(input []int, circular bool) []int {
 
 	//make it "circular" by appending all repeating elements in the beginning,
@@ -42,6 +43,26 @@ func GetRepeatingNumbers(input []int, circular bool) []int {
 		}
 
 		if (input[i] == input[i+1]) {
+			result = append(result, input[i])
+		}
+	}
+
+
+ 	return result
+}
+
+
+func GetRepeatingNumbersHalfway(input []int) []int {
+
+	result := make([]int, 0)
+	length := len(input)
+	halfway := length/2
+
+	for i := 0; i < length; i++ {
+
+		halfwayIdx := (i + halfway)%length
+
+		if (input[i] == input[halfwayIdx]) {
 			result = append(result, input[i])
 		}
 	}
