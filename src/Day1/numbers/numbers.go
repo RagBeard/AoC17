@@ -2,9 +2,34 @@ package numbers
 
 func GetRepeatingNumbers(input []int, circular bool) []int {
 
-	//make it "circular" by appending first element last
+	//make it "circular" by appending all repeating elements in the beginning,
+	// to the end, if it matches the last element
 	if (circular){
-		input = append(input, input[0])
+
+		//pick first element from the start, and any following of the same value
+		//remove them from there and append to end of array	
+		start := []int{input[0]}
+		var nStartIndex int = 0
+
+		for i := 1; i < len(input); i++ {
+
+			if (input[i] == start[0]) {
+				start = append(start, input[i])
+			} else {
+				nStartIndex = i
+				break
+			}
+			if (i == len(input) - 1){
+				nStartIndex = i
+			}
+		}
+
+		//trim off the start chunk
+		input = input[nStartIndex:]
+
+		//add it to the end
+		input = append(input, start...)
+
 	}
 
 	result := make([]int, 0)

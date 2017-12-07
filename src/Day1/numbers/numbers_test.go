@@ -1,6 +1,9 @@
 package numbers
 
-import "testing"
+import (
+	"testing"
+	"Day1/slice"
+)
 
 
 //NOTE TO SELF []int is SLICE, [size]int is ARRAY...
@@ -14,26 +17,33 @@ func testGRN(t *testing.T){
 		{[]int{1, 2, 3, 4}, []int{} },
 		{[]int{1, 1, 2, 2}, []int{1, 2} },
 		{[]int{9, 1, 2, 1, 2, 1, 2, 9}, []int{9} },
+		{[]int{7, 7, 7, 2, 3, 7, 7}, []int{7, 7, 7, 7} },
 	}
 
 	for _, c := range tests {
 		got := GetRepeatingNumbers(c.input, true)
 
 		isWrong := false
+		gotLength := len(got)
+		wantLength := len(c.want)
 
-		if (len(got) != len(c.want) ) {
+		if (gotLength != wantLength ) {
 			isWrong = true
 		} else {
 
 			//length is same, compare contents
 
-			for i := 0; i < len(got); i++ {
-				if (got[i] != c.want[i]) {
+			//TODO: only check content, not order! [1 2 3] is same as [3 1 2]
+
+			for _, k := range c.want {
+
+				idx := slice.SliceIndex(gotLength, func(i int) bool { return got[i] == k})
+
+				if (idx < 0){
 					isWrong = true
 					break
 				}
 			}
-
 		}
 
 		if (isWrong){
